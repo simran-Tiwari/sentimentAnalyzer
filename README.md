@@ -1,4 +1,4 @@
-#  Sentiment Analyzer (AI Powered)
+#  Sentiment Analyzer (AI Powered)  LIVE : https://sentiment-analyzer-gray.vercel.app/
 
 A simple yet powerful **Sentiment Analyzer** that converts user feedback into instant emotional insights using AI 😊😐😞  
 
