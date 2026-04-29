@@ -14,7 +14,7 @@ function App() {
     setResult(null);
 
     try {
-      const res = await fetch("http://localhost:5000/analyze", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
