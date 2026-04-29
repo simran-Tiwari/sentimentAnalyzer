@@ -1,82 +1,3 @@
-// require("dotenv").config();
-
-// const express = require("express");
-// const cors = require("cors");
-// const OpenAI = require("openai");
-
-// const app = express();
-
-// app.use(cors());
-// app.use(express.json());
-
-// const client = new OpenAI({
-//   apiKey: process.env.OPENROUTER_KEY,
-//   baseURL: "https://openrouter.ai/api/v1",
-// });
-
-// // emoji mapping
-// const emojiMap = {
-//   positive: "😊",
-//   negative: "😞",
-//   neutral: "😐",
-// };
-
-// app.post("/analyze", async (req, res) => {
-//   const message = req.body.mesg;
-
-//   if (!message) {
-//     return res.status(400).json({ error: "Message is required" });
-//   }
-
-//   try {
-//     const response = await client.chat.completions.create({
-//       model: "mistralai/mistral-7b-instruct:free",
-
-//       messages: [
-//         {
-//           role: "system",
-//           content: `
-// You are a sentiment classifier.
-
-// Rules:
-// - Output ONLY ONE word from: positive, negative, neutral
-// - If multiple emotions exist, pick the FIRST dominant emotion
-// - No explanation, no extra text
-//           `,
-//         },
-//         {
-//           role: "user",
-//           content: message,
-//         },
-//       ],
-//     });
-
-//     let emotion = response.choices[0].message.content
-//       .trim()
-//       .toLowerCase();
-
-//     // safety fallback
-//     if (!emojiMap[emotion]) {
-//       emotion = "neutral";
-//     }
-
-//     res.json({
-//       emotion,
-//       emoji: emojiMap[emotion],
-//     });
-
-//   } catch (err) {
-//     console.error(err.message);
-
-//     res.status(500).json({
-//       error: "Something went wrong",
-//     });
-//   }
-// });
-
-// app.listen(5000, () => {
-//   console.log("Server running on port 5000");
-// });
 
 
 require("dotenv").config();
@@ -86,11 +7,11 @@ const cors = require("cors");
 const OpenAI = require("openai");
 
 const app = express();
-
+const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// ✅ Improved OpenRouter setup
+
 const client = new OpenAI({
   apiKey: process.env.OPENROUTER_KEY,
   baseURL: "https://openrouter.ai/api/v1",
@@ -100,14 +21,14 @@ const client = new OpenAI({
   },
 });
 
-// emoji mapping
+
 const emojiMap = {
   positive: "😊",
   negative: "😞",
   neutral: "😐",
 };
 
-// ✅ helper function with fallback model
+
 async function getSentiment(message) {
   try {
     return await client.chat.completions.create({
@@ -124,7 +45,7 @@ async function getSentiment(message) {
   } catch (err) {
     console.log("Primary model failed, trying fallback...");
 
-    // 🔁 fallback model
+    
     return await client.chat.completions.create({
       model: "openai/gpt-3.5-turbo",
       messages: [
@@ -171,6 +92,6 @@ app.post("/analyze", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
